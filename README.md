@@ -1,6 +1,6 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This projcet is for Learning purpose of React and material UI by Indravijaysinh Zala; Traniee Software Engineer at cognam Tech pvt. ltd. This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
