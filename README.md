@@ -6,6 +6,10 @@ This projcet is for Learning purpose of React and material UI by Indravijaysinh 
 
 In the project directory, you can run:
 
+### `npm install`
+
+Install All dependancies which you need to run this project\
+
 ### `npm start`
 
 Runs the app in the development mode.\
