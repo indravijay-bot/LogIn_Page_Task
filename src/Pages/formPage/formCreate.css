@@ -1,0 +1,10 @@
+.form_details{
+ padding: 3rem 1rem;
+ justify-content: center;
+ margin-bottom: 0.5rem;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
