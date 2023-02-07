@@ -1,14 +1,17 @@
 import React from "react";
 import { Paper, Stack, Typography } from "@mui/material";
 import "./content.css";
+import { login } from "../../redux";
+import { Connect } from "react-redux";
+import { useSelector } from "react-redux";
 const colorWhite = {
   color: "white",
 };
 const colorPrimary = {
   color: "#1976D2",
 };
-const Content = (props) => {
-  const data = props.data;
+const Content = () => {
+  const data = useSelector(state => state.user.users)
   return (
     <>
       <Typography variant="h5" mt={2} mb={8}>

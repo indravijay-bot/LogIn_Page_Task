@@ -3,7 +3,8 @@ import { Avatar, Button, Stack, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./formCreate.css";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
-
+import { useDispatch } from "react-redux";
+import { login } from "../../redux";
 const marginTopStyle = {
   marginTop: "2rem",
 };
@@ -11,7 +12,8 @@ const colorWhite = {
   color: "white",
 };
 
-const FormCreate = (props) => {
+const FormCreate = () => {
+  const disptach = useDispatch();
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [numberError, setNumberError] = useState("");
@@ -52,7 +54,8 @@ const FormCreate = (props) => {
     if (formRejct) {
       return false;
     }
-    props.setNewData(data);
+
+    disptach(login(data));
     reset();
 
     return true;
