@@ -6,8 +6,8 @@ import "./main.css";
 import { connect, Connect, useSelector } from "react-redux";
 
 const Main = () => {
-  const data = useSelector((state) => state.user.users);
-  console.log(data);
+  // const data = useSelector((state) => state.user.users);
+  // console.log(data);
 
   return (
     <>

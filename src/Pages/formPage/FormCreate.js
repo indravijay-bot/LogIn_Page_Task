@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -16,11 +16,12 @@ import "./formCreate.css";
 import { useHistory, useNavigate } from "react-router-dom";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
 import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
-import { useDispatch } from "react-redux";
-import { login } from "../../redux";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../redux/actions";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Navigate } from "react-router-dom";
+import { loadImages } from "../../redux/actions";
 const marginTopStyle = {
   marginTop: "3rem",
 };
@@ -37,10 +38,20 @@ const FormCreate = () => {
   const [passwordError, setPasswordError] = useState("");
   const { register, reset, handleSubmit } = useForm();
   const [countryError, setCountryError] = useState("");
+  const [dropdownValue, setDropdownValue] = useState("hi");
+  const reduxData = useSelector((state) => state);
+  const [apiError, setApiError] = useState("");
+  useEffect(() => {
+    if (reduxData.images.length > 0) {
+      navigate("/apiCall");
+    } else if (reduxData.error != null) {
+      setApiError(reduxData.error);
+    }
+  }, [reduxData.images, reduxData.error]);
 
   const submitCliked = (data) => {
     let formRejct = false;
-    console.log(data);
+
     if (!data.firstName || !data.firstName.length) {
       setNameError("name is required");
       console.log("enters in null");
@@ -92,13 +103,12 @@ const FormCreate = () => {
     if (formRejct) {
       return false;
     }
-
-    console.log(data);
+    setDropdownValue("hi");
+    console.log(dropdownValue);
     disptach(login(data));
 
     reset();
-    
-    navigate("/apiCall");
+
     return true;
   };
 
@@ -169,14 +179,12 @@ const FormCreate = () => {
                 labelId="demo-select-small"
                 id="demo-select-small"
                 {...register("country")}
-                defaultValue="hi"
+                defaultValue={dropdownValue}
                 label="Country *"
                 error={countryError && countryError.length ? true : false}
                 onChange={() => setCountryError(false)}
               >
-                <MenuItem value="hi" selected>
-                  Please Select a Country
-                </MenuItem>
+                <MenuItem value="hi">Please Select a Country</MenuItem>
                 <MenuItem value="India">India</MenuItem>
                 <MenuItem value="pakistan">Pakistan</MenuItem>
                 <MenuItem value="australia">Austrlia</MenuItem>
@@ -237,10 +245,22 @@ const FormCreate = () => {
             ></TextField>
           </Stack>
         </Stack>
-        <Button type="submit" variant="contained" color="primary" style={marginTopStyle}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          style={marginTopStyle}
+        >
           Submit
         </Button>
       </form>
+      {apiError ? (
+        <Typography variant="caption">
+          API Error Please try again Later
+        </Typography>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

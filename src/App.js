@@ -1,7 +1,7 @@
 import "./App.css";
 import Main from "./Pages/formPage/Main";
 import background from "./assets/img/bgd.jpg";
-
+import history from "./history";
 import { Route, BrowserRouter as Router, Routes, Navigate } from "react-router-dom";
 import Apicall from "./Pages/ApiPage/Apicall";
 
@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Router>
+        <Router history = {history}>
           <Routes>
             <Route exact path="/signUp" element={<Main />} />
             <Route exact path="/apiCall" element={<Apicall />} />

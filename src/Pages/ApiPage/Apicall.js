@@ -1,7 +1,9 @@
-import React from "react";
-import { Paper, Stack, Typography } from "@mui/material";
+import React, { useEffect } from "react";
+import { Button, Paper, Stack, Typography } from "@mui/material";
+import "./apiCall.css";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { loadImages } from "../../redux/actions";
 
-import { useSelector } from "react-redux";
 const colorWhite = {
   color: "white",
 };
@@ -9,72 +11,30 @@ const colorPrimary = {
   color: "#1976D2",
 };
 const Apicall = () => {
-  const data = useSelector((state) => state.user.users);
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state);
+  console.log(data);
+
   return (
     <>
-      <Typography variant="h5" mt={2} mb={8}>
-        Welcome {data.firstName + " "+ data.lastName}
-      </Typography>
+    <div className="Content">
 
-      {/* {data.length === 0 ? (
-        <Typography variant="caption" style={colorWhite}>
-          Please fill the form for display your login details
-        </Typography>
-      ) : (
-        <>
-          <Stack spacing={4}>
-            {data.map((dataCard,i) => (
-              <Paper
-                elevation={6}
-                style={{
-                  backgroundColor: "#001E3C",
-                  paddingTop: "2rem",
-                  paddingBottom: "2rem",
-                }}
-              >
-                <Stack spacing={1}>
-                  <Stack
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    spacing={3}
-                  >
-                    <Typography variant="overline" style={colorWhite}>
-                      <span style={colorPrimary}>Name : </span> {dataCard.name}
-                    </Typography>
-                    <Typography variant="overline" style={colorWhite}>
-                      <span style={colorPrimary}>Ph No : </span>{" "}
-                      {dataCard.number}
-                    </Typography>
-                  </Stack>
-                  <Stack
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    spacing={3}
-                  >
-                    <Typography variant="overline" style={colorWhite}>
-                      <span style={colorPrimary}>Email : </span>{" "}
-                      {dataCard.email}
-                    </Typography>
-                  </Stack>
-                  <Stack
-                    direction="row"
-                    justifyContent="center"
-                    alignItems="center"
-                    spacing={3}
-                  >
-                    <Typography variant="overline" style={colorWhite}>
-                      <span style={colorPrimary}>Message </span> "{" "}
-                      {dataCard.msg} "
-                    </Typography>
-                  </Stack>
-                </Stack>
-              </Paper>
-            ))}
-          </Stack>
-        </>
-      )} */}
+    
+      <Typography variant="h5" mt={2} mb={8}>
+        Welcome {data.user.users.firstName + " "+ data.user.users.lastName}
+      </Typography>
+      <div className="content">
+        <section className="grid">
+          {data.images.map((image) => (
+            <img src={image.urls.thumb} alt={image.user.username} />
+          ))}
+        </section>
+        {data.error && (
+          <div className="error">{JSON.stringify(data.error)}</div>
+        )}
+        <Button className="mb-5" variant="contained" disabled={data.isLoading} onClick={() => dispatch(loadImages())}>Load More</Button>
+      </div>
+      </div>
     </>
   );
 };
