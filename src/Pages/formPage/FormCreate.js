@@ -1,12 +1,28 @@
 import React, { useState } from "react";
-import { Avatar, Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import "./formCreate.css";
+import { useHistory, useNavigate } from "react-router-dom";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
+import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { Navigate } from "react-router-dom";
 const marginTopStyle = {
-  marginTop: "2rem",
+  marginTop: "3rem",
 };
 const colorWhite = {
   color: "white",
@@ -14,20 +30,25 @@ const colorWhite = {
 
 const FormCreate = () => {
   const disptach = useDispatch();
+  let navigate = useNavigate();
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [numberError, setNumberError] = useState("");
-
+  const [passwordError, setPasswordError] = useState("");
   const { register, reset, handleSubmit } = useForm();
+  const [countryError, setCountryError] = useState("");
 
   const submitCliked = (data) => {
     let formRejct = false;
-    if (!data.name || !data.name.length) {
+    console.log(data);
+    if (!data.firstName || !data.firstName.length) {
       setNameError("name is required");
+      console.log("enters in null");
       formRejct = true;
     } else {
       setNameError("");
     }
+
     if (!data.number || !data.number.length) {
       setNumberError("number is required");
       formRejct = true;
@@ -37,6 +58,14 @@ const FormCreate = () => {
     } else {
       setNumberError("");
     }
+
+    if (!data.country || !data.country.length || data.country === "hi") {
+      setCountryError("Please Select a option");
+      formRejct = true;
+    } else {
+      setCountryError("");
+    }
+
     if (!data.email || !data.email.length) {
       setEmailError("email is required");
       formRejct = true;
@@ -50,27 +79,38 @@ const FormCreate = () => {
     } else {
       setEmailError("");
     }
+    if (!data.password || !data.password.length) {
+      setPasswordError("Password is required");
+      formRejct = true;
+    } else if (data.password.length < 8) {
+      setPasswordError("Enter password with minimum 8 characters");
+      formRejct = true;
+    } else {
+      setPasswordError("");
+    }
 
     if (formRejct) {
       return false;
     }
 
+    console.log(data);
     disptach(login(data));
-    reset();
 
+    reset();
+    
+    navigate("/apiCall");
     return true;
   };
 
   return (
     <div className="form_details">
-      <Avatar style={{ backgroundColor: "#001e3c", border: "3px solid white" }}>
-        <LoginRoundedIcon sx={{ fontSize: 30 }}></LoginRoundedIcon>
-      </Avatar>
+      <VpnKeyOutlinedIcon sx={{ fontSize: 60 }}></VpnKeyOutlinedIcon>
+
       <Typography variant="h5" mt={2}>
-        LOG IN
+        SIGN UP
       </Typography>
-      <Typography variant="caption" style={colorWhite}>
-        Please fill the form for display your login details
+      <Typography variant="caption">
+        Please fill the form and submit to see Images with API CALL
       </Typography>
       <form style={marginTopStyle} onSubmit={handleSubmit(submitCliked)}>
         <Stack spacing={4}>
@@ -79,29 +119,87 @@ const FormCreate = () => {
             justifyContent="center"
             alignItems="center"
             spacing={3}
+            defaultValue="choose"
           >
             <TextField
               error={nameError && nameError.length ? true : false}
               helperText={nameError}
               size="small"
-              label="Name *"
-              sx={{ input: { color: "white" } }}
-              id="secret-create-title"
+              label="First Name *"
+              // onKeyUp={(event) => {
+              //   if (!/[a-z]/i.test(event.key)) {
+              //     event.target.value = event.target.value.slice(0, -1);
+              //   }
+              // }}
+              // id="secret-create-title"
               autoComplete="off"
-              focused
-              {...register("name")}
+              {...register("firstName")}
+              onChange={(event) => {
+                setNameError(false);
+
+                if (!/[a-z]/i.test(event.nativeEvent.data)) {
+                  event.target.value = event.target.value.slice(0, -1);
+                }
+              }}
             ></TextField>
+            <TextField
+              size="small"
+              label="Last Name"
+              // id="secret-create-title"
+              autoComplete="off"
+              {...register("lastName")}
+              onChange={(event) => {
+                setNameError(false);
+
+                if (!/[a-z]/i.test(event.nativeEvent.data)) {
+                  event.target.value = event.target.value.slice(0, -1);
+                }
+              }}
+            ></TextField>
+          </Stack>
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={3}
+          >
+            <FormControl sx={{ width: 222 }} size="small">
+              <InputLabel id="demo-select-small">Country *</InputLabel>
+              <Select
+                labelId="demo-select-small"
+                id="demo-select-small"
+                {...register("country")}
+                defaultValue="hi"
+                label="Country *"
+                error={countryError && countryError.length ? true : false}
+                onChange={() => setCountryError(false)}
+              >
+                <MenuItem value="hi" selected>
+                  Please Select a Country
+                </MenuItem>
+                <MenuItem value="India">India</MenuItem>
+                <MenuItem value="pakistan">Pakistan</MenuItem>
+                <MenuItem value="australia">Austrlia</MenuItem>
+                <MenuItem value="new zealand">New Zealand</MenuItem>
+                <MenuItem value="usa">USA</MenuItem>
+              </Select>
+              {countryError && countryError.length ? (
+                <FormHelperText style={{ color: "red" }}>
+                  {countryError}
+                </FormHelperText>
+              ) : (
+                <></>
+              )}
+            </FormControl>
             <TextField
               error={numberError && numberError.length ? true : false}
               helperText={numberError}
               type="number"
               size="small"
               label="Phone Number *"
-              sx={{ input: { color: "white" } }}
               className="numberfieldClass"
-              autoComplete="off"
-              focused
               {...register("number")}
+              onChange={() => setNumberError(false)}
             ></TextField>
           </Stack>
           <Stack
@@ -116,10 +214,9 @@ const FormCreate = () => {
               helperText={emailError}
               size="small"
               label="Email *"
-              sx={{ input: { color: "white" } }}
               {...register("email")}
               autoComplete="off"
-              focused
+              onChange={() => setEmailError(false)}
             ></TextField>
           </Stack>
           <Stack
@@ -130,16 +227,17 @@ const FormCreate = () => {
           >
             <TextField
               style={{ width: 470 }}
-              sx={{ input: { color: "white" } }}
-              rows={4}
-              label="Message"
-              {...register("msg")}
+              error={passwordError && passwordError.length ? true : false}
+              helperText={passwordError}
+              size="small"
+              label="Password *"
+              {...register("password")}
               autoComplete="off"
-              focused
+              onChange={() => setPasswordError(false)}
             ></TextField>
           </Stack>
         </Stack>
-        <Button type="submit" variant="outlined" style={marginTopStyle}>
+        <Button type="submit" variant="contained" color="primary" style={marginTopStyle}>
           Submit
         </Button>
       </form>

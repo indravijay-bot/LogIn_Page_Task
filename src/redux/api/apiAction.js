@@ -1,36 +1,38 @@
-import axios from "axios"
+import { IMAGES } from './apiConstant';
 
-export const fetchApiReq = () =>{
-  return {
-    type: 'FETCH_REQ'
-  }
-}
+const loadImages = () => ({
+    type: IMAGES.LOAD,
+});
 
-const fetchApiSuccess = data =>{
-  return {
-    type: 'FETCH_REQ_SUC',
-    payload: data
-  }
-}
-const fetchApiError = error =>{
-  return {
-    type: 'FETCH_REQ_ERR',
-    payload: error
-  }
-}
+const setImages = images => ({
+    type: IMAGES.LOAD_SUCCESS,
+    images,
+});
 
-export const fetchApi = () =>{
-  return (dispatch) => {
-    axios.get('https://api.weatherapi.com/v1/current.json?key=7aa159a2175d45f99a2200436230702&q=vadodara&aqi=no')
-      .then(response => {
-        const data=response.data
-        console.log(data);
-        dispatch(fetchApiSuccess(data));
-      })
-      .catch(error=>{
-        const errorMsg =error.message
-        dispatch(fetchApiError(errorMsg));
-      })
+const setError = error => ({
+    type: IMAGES.LOAD_FAIL,
+    error,
+});
 
-  }
-}
+// const loadImageStats = id => ({
+//     type: STATS.LOAD,
+//     id,
+// });
+
+// const setImageStats = (id, downloads) => ({
+//     type: STATS.LOAD_SUCCESS,
+//     id,
+//     downloads,
+// });
+
+// const setImageStatsError = id => ({
+//     type: STATS.LOAD_FAIL,
+//     id,
+// });
+
+export {
+    loadImages,
+    setImages,
+    setError,
+   
+};

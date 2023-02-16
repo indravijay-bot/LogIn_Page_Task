@@ -1,6 +1,6 @@
 import React from "react";
 import { Paper, Stack, Typography } from "@mui/material";
-import "./content.css";
+
 import { useSelector } from "react-redux";
 const colorWhite = {
   color: "white",
@@ -8,22 +8,22 @@ const colorWhite = {
 const colorPrimary = {
   color: "#1976D2",
 };
-const Content = () => {
+const Apicall = () => {
   const data = useSelector((state) => state.user.users);
   return (
     <>
       <Typography variant="h5" mt={2} mb={8}>
-        Data
+        Welcome {data.firstName + " "+ data.lastName}
       </Typography>
 
-      {data.length === 0 ? (
+      {/* {data.length === 0 ? (
         <Typography variant="caption" style={colorWhite}>
           Please fill the form for display your login details
         </Typography>
       ) : (
         <>
           <Stack spacing={4}>
-            {data.map((dataCard) => (
+            {data.map((dataCard,i) => (
               <Paper
                 elevation={6}
                 style={{
@@ -74,9 +74,9 @@ const Content = () => {
             ))}
           </Stack>
         </>
-      )}
+      )} */}
     </>
   );
 };
 
-export default Content;
+export default Apicall;
