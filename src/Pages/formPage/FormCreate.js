@@ -42,7 +42,7 @@ const FormCreate = () => {
   const reduxData = useSelector((state) => state);
   const [apiError, setApiError] = useState("");
   useEffect(() => {
-    if (reduxData.images.length > 0) {
+    if (reduxData.images.length > 0 ) {
       navigate("/apiCall");
     } else if (reduxData.error != null) {
       setApiError(reduxData.error);
@@ -104,7 +104,7 @@ const FormCreate = () => {
       return false;
     }
     setDropdownValue("hi");
-    console.log(dropdownValue);
+
     disptach(login(data));
 
     reset();
